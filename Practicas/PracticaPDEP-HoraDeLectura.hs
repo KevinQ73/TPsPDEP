@@ -66,8 +66,8 @@ legado = ("Legado", "Christopher Paolini", 811)
 
 -- 1.
 
--- promedioDeHojas :: Num a => Biblioteca -> a
--- promedioDeHojas biblioteca = (sumaCantidadDeHojas biblioteca) / (length biblioteca)
+promedioDeHojas :: Biblioteca -> Int
+promedioDeHojas biblioteca = div (sumaCantidadDeHojas biblioteca) (length biblioteca)
 
 sumaCantidadDeHojas :: Biblioteca -> Int
 sumaCantidadDeHojas biblioteca = (sum . listaDePaguinasDeCadaLibro) biblioteca
@@ -101,7 +101,7 @@ nombreDeLaBiblioteca :: Biblioteca -> String
 nombreDeLaBiblioteca biblioteca = filter (not . esVocal) (concatenarNombres biblioteca)
 
 esVocal :: Char -> Bool
-esVocal c = elem c "AEIOUaeiou"
+esVocal letra = elem letra "AEIOUaeiou"
 
 concatenarNombres :: Biblioteca -> String
 concatenarNombres biblioteca = concatMap obtenerTituloDelLibro biblioteca
