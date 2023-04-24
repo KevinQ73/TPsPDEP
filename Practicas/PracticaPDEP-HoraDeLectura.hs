@@ -1,33 +1,37 @@
 -- Datos del ejercicio
 
 type Titulo = String
+
 type Autor = String
+
 type Hojas = Int
+
 type Lectura = (Titulo, Autor, Hojas)
+
 type Biblioteca = [Lectura]
 
-titulo :: Lectura -> Titulo
-titulo (tit, _, _) = tit
+obtenerTituloDelLibro :: Lectura -> Titulo
+obtenerTituloDelLibro (titulo, _, _) = titulo
 
-autor :: Lectura -> Autor
-autor (_, aut, _) = aut
+obtenerNombreDelAutor :: Lectura -> Autor
+obtenerNombreDelAutor (_, autor, _) = autor
 
-hojas :: Lectura -> Hojas
-hojas (_, _, paginas) = paginas
+obtenerPaguinasDelLibro :: Lectura -> Hojas
+obtenerPaguinasDelLibro (_, _, paginas) = paginas
 
---Lista de Obras
+-- Lista de Obras
 
 visitante :: Lectura
-visitante = ("El Visitante","Stephen King", 592)
+visitante = ("El Visitante", "Stephen King", 592)
 
 snk1 :: Lectura
-snk1 = ("Shingeki No Kyojin 1","Hajime Isayama", 40)
+snk1 = ("Shingeki No Kyojin 1", "Hajime Isayama", 40)
 
 snk3 :: Lectura
-snk3 = ("Shingeki No Kyojin 3","Hajime Isayama", 40)
+snk3 = ("Shingeki No Kyojin 3", "Hajime Isayama", 40)
 
 snk127 :: Lectura
-snk127 = ("Shingeki No Kyojin 127","Hajime Isayama", 40)
+snk127 = ("Shingeki No Kyojin 127", "Hajime Isayama", 40)
 
 fundacion :: Lectura
 fundacion = ("Fundacion", "Isaac Asimov", 230)
@@ -53,57 +57,56 @@ brisignr = ("Brisignr", "Christopher Paolini", 700)
 legado :: Lectura
 legado = ("Legado", "Christopher Paolini", 811)
 
-
---Funciones a definir:
+-- Funciones a definir:
 -- 1.promedioDeHojas
 -- 2.lecturaObligatoria
 -- 3.bibliotecaFantasiosa
 -- 4.nombreDeLaBiblioteca
 -- 5.bibliotecaLigera
 
---1.
+-- 1.
 
---promedioDeHojas :: Num a => Biblioteca -> a
---promedioDeHojas biblioteca = (sumaCantidadDeHojas biblioteca) / (length biblioteca)
+promedioDeHojas :: Biblioteca -> Int
+promedioDeHojas biblioteca = div (sumaCantidadDeHojas biblioteca) (length biblioteca)
 
 sumaCantidadDeHojas :: Biblioteca -> Int
-sumaCantidadDeHojas biblioteca = (sum . listaDeHojas) biblioteca
+sumaCantidadDeHojas biblioteca = (sum . listaDePaguinasDeCadaLibro) biblioteca
 
-listaDeHojas :: Biblioteca -> [Hojas]
-listaDeHojas biblioteca = map hojas biblioteca
+listaDePaguinasDeCadaLibro :: Biblioteca -> [Hojas]
+listaDePaguinasDeCadaLibro biblioteca = map obtenerPaguinasDelLibro biblioteca
 
 dividirCantidadDeLibros :: Biblioteca -> Int -> Int
 dividirCantidadDeLibros biblioteca suma = div suma (length biblioteca)
 
---2. 
+-- 2.
 
-lecturaObligatoria :: Lectura -> Bool
-lecturaObligatoria ("Fundacion", _, _) = True
-lecturaObligatoria (_, "Stephen King", _) = True
-lecturaObligatoria (_, "Christopher Paolini", _) = True
-lecturaObligatoria (_, _, _) = False
+esLecturaObligatoria :: Lectura -> Bool
+esLecturaObligatoria ("Fundacion", _, _) = True
+esLecturaObligatoria (_, "Stephen King", _) = True
+esLecturaObligatoria (_, "Christopher Paolini", _) = True
+esLecturaObligatoria (_, _, _) = False
 
---3. 
+-- 3.
 bibliotecaFantasiosa :: Biblioteca -> Bool
-bibliotecaFantasiosa biblioteca = any lecturaFantasiosa biblioteca
+bibliotecaFantasiosa biblioteca = any esLecturaFantasiosa biblioteca
 
-lecturaFantasiosa :: Lectura -> Bool
-lecturaFantasiosa (_, "Christopher Paolini", _) = True
-lecturaFantasiosa (_, "Neil Gaiman", _) = True
-lecturaFantasiosa (_, _, _) = False
+esLecturaFantasiosa :: Lectura -> Bool
+esLecturaFantasiosa (_, "Christopher Paolini", _) = True
+esLecturaFantasiosa (_, "Neil Gaiman", _) = True
+esLecturaFantasiosa (_, _, _) = False
 
---4.
+-- 4.
 
 nombreDeLaBiblioteca :: Biblioteca -> String
 nombreDeLaBiblioteca biblioteca = filter (not . esVocal) (concatenarNombres biblioteca)
 
 esVocal :: Char -> Bool
-esVocal c = elem c "AEIOUaeiou"
+esVocal letra = elem letra "AEIOUaeiou"
 
 concatenarNombres :: Biblioteca -> String
-concatenarNombres biblioteca = concatMap titulo biblioteca
+concatenarNombres biblioteca = concatMap obtenerTituloDelLibro biblioteca
 
---5.
+-- 5.
 
 bibliotecaLigera :: Biblioteca -> Bool
-bibliotecaLigera biblioteca = all (<= 40) (listaDeHojas biblioteca)
+bibliotecaLigera biblioteca = all (<= 40) (listaDePaguinasDeCadaLibro biblioteca)
